@@ -1,0 +1,12 @@
+{
+    "name": "saber-magic",
+    "version": "0.1.0",
+    "description": "Transition & Animation",
+    "main": "main",
+    "maintainers": [
+        { "name": "treelite", "email": "c.xinle@gmail.com" }
+    ],
+    "license": "BSD",
+    "repository": "git://github.com/ecomfe/saber-magic.git",
+    "bugs": "https://github.com/ecomfe/saber-magic/issues"
+}
