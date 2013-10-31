@@ -16,6 +16,48 @@ define(function (require) {
             'otransitionend' // Opera某些犯2的版本...
         ];
 
+    var detectEle = document.createElement('div');
+    var prefixes = ['webkit', 'ms', 'o']
+
+    /**
+     * 将CSS属性驼峰化
+     * 
+     * @param {string} target 目标字符串
+     * @return {string}
+     */
+    function camelize( target ) {
+        return target.replace(/-+(.)?/g, function( match, chr ) {
+            return chr ? chr.toUpperCase() : '';
+        });
+    }
+
+    /**
+     * 检测支持的CSS属性名称
+     * 如果没有找到支持的属性名称返回原有值
+     *
+     * @inner
+     * @param {string} property CSS属性名
+     * @return {string}
+     */
+    function detectProperty(property) {
+        if (property.charAt(0) !== '-') {
+            var style = detectEle.style;
+            var name = camelize(property);
+
+            if (!(name in style)) {
+                name = property.charAt(0).toUpperCase()
+                            + property.substring(1);
+                for (var i = 0, prefix; prefix = prefixes[i]; i++) {
+                    if (prefix + name in style) {
+                        property = '-' + prefix + '-' + property;
+                        break;
+                    }
+                }
+            }
+        }
+        return property;
+    }
+
     /**
      * 监听transition完成事件
      * 注册所有可能的transitionend
@@ -111,6 +153,10 @@ define(function (require) {
         else {
             resolver.fulfill();
         }
+
+        propertyNames.forEach(function (property, index) {
+            propertyNames[index] = detectProperty(property);
+        });
 
         dom.setStyle(ele, 'transition-property', propertyNames.join(','));
         dom.setStyle(ele, 'transition-duration', options.duration + 's');

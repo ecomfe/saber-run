@@ -45,7 +45,7 @@ define(function (require) {
 
                 waitsFor(
                     function () {return endTime;},
-                    '应该触发完成回调',
+                    'should fire transitionend',
                     600
                 );
 
@@ -86,6 +86,29 @@ define(function (require) {
                     expect(count).toBe(1);
                     expect(ele.style.width).toBe('200px');
                     expect(ele.style.height).toBe('200px');
+                });
+            });
+
+            it('set private property', function () {
+                var promise = magic.transition(
+                        ele, 
+                        {transform: 'translate(10px, 0px)'},
+                        {duration: 0.5}
+                    );
+
+                var callled = false;
+                promise.then(function () {
+                    callled = true;
+                });
+
+                waitsFor(
+                    function () {return callled},
+                    'should fire transitionend',
+                    650
+                );
+
+                runs(function () {
+                    expect(true).toBeTruthy();
                 });
             });
         });
