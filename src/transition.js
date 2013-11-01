@@ -140,6 +140,8 @@ define(function (require) {
             var res = true;
             if (propertyNames.length <= 1) {
                 resolver.fulfill();
+                // 恢复默认设置
+                dom.setStyle(ele, 'transition', '');
             }
             else {
                 propertyNames.splice(propertyNames.indexOf(e.propertyName), 1);
