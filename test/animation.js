@@ -4,12 +4,12 @@
  */
 
 define(function (require) {
-    var magic = require('saber-magic');
+    var runner = require('saber-run');
 
     describe('animation', function () {
         it('.requestAnimationFrame', function () {
             var res = false;
-            magic.requestAnimationFrame(function () {
+            runner.requestAnimationFrame(function () {
                 res = true;
             });
 
@@ -28,11 +28,11 @@ define(function (require) {
 
         it('.cancelAnimationFrame', function () {
             var res = false;
-            var id = magic.requestAnimationFrame(function () {
+            var id = runner.requestAnimationFrame(function () {
                 res = true;
             });
 
-            magic.cancelAnimationFrame(id);
+            runner.cancelAnimationFrame(id);
 
             var t = false;
             setTimeout(function () {

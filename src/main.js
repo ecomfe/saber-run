@@ -1,5 +1,5 @@
 /**
- * @file saber-magic
+ * @file saber-run
  * @author treelite(c.xinle@gmail.com)
  */
 

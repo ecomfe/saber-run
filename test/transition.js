@@ -4,7 +4,7 @@
  */
 
 define(function (require) {
-    var magic = require('saber-magic');
+    var runner = require('saber-run');
 
     describe('transition', function () {
         describe('.transition', function () {
@@ -32,7 +32,7 @@ define(function (require) {
                 ele.style.width = '200px';
 
                 var startTime = new Date().getTime();
-                var promise = magic.transition(
+                var promise = runner.transition(
                         ele, 
                         { width: '200px' },
                         { duration: 0.5 }
@@ -56,7 +56,7 @@ define(function (require) {
             });
 
             it('set multi properties', function () {
-                var promise = magic.transition(
+                var promise = runner.transition(
                         ele, 
                         {
                             width: '200px',
@@ -90,7 +90,7 @@ define(function (require) {
             });
 
             it('set private property', function () {
-                var promise = magic.transition(
+                var promise = runner.transition(
                         ele, 
                         {transform: 'translate(10px, 0px)'},
                         {duration: 0.5}
