@@ -1,7 +1,7 @@
 {
     "name": "saber-run",
     "version": "0.1.0",
-    "description": "Transition & Animation",
+    "description": "移动端动画效果支持",
     "main": "main",
     "maintainers": [
         { "name": "treelite", "email": "c.xinle@gmail.com" }

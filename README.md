@@ -1,6 +1,23 @@
 # saber-run
 
-提供动画相关功能
+移动端动画效果支持
+
+## Usage
+
+    var runner = require('saber-run');
+    var ele = document.getElmentById('saber');
+
+    // 首先让元素淡入并且水平移动10像素
+    var action = runner.transition(
+        ele,
+        { opacity: 1, tranform: 'translate3d(10px, 0, 0)' },
+        { duration: 3, timing: 'ease-out' }
+    );
+    
+    // 然后在动画完成后再做点啥
+    action.then(function () { 
+        alert('Surprise');
+    });
 
 ## API
 
