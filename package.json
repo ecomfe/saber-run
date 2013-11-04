@@ -11,6 +11,6 @@
         "saber-dom": "~0.1.0"
     },
     "license": "BSD",
-    "repository": "git://github.com/ecomfe/saber-magic.git",
-    "bugs": "https://github.com/ecomfe/saber-magic/issues"
+    "repository": "git://github.com/ecomfe/saber-run.git",
+    "bugs": "https://github.com/ecomfe/saber-run/issues"
 }
