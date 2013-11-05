@@ -4,11 +4,14 @@
     "description": "移动端动画效果支持",
     "main": "main",
     "maintainers": [
-        { "name": "treelite", "email": "c.xinle@gmail.com" }
+        {
+            "name": "treelite",
+            "email": "c.xinle@gmail.com"
+        }
     ],
     "dependencies": {
         "saber-promise": "~0.1.0",
-        "saber-dom": "~0.1.0"
+        "saber-dom": "~0.3.0"
     },
     "license": "BSD",
     "repository": "git://github.com/ecomfe/saber-run.git",
