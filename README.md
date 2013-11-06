@@ -4,20 +4,22 @@
 
 ## Usage
 
-    var runner = require('saber-run');
-    var ele = document.getElmentById('saber');
+```javascript
+var runner = require('saber-run');
+var ele = document.getElmentById('saber');
 
-    // 首先让元素淡入并且水平移动10像素
-    var action = runner.transition(
-        ele,
-        { opacity: 1, tranform: 'translate3d(10px, 0, 0)' },
-        { duration: 3, timing: 'ease-out' }
-    );
-    
-    // 然后在动画完成后再做点啥
-    action.then(function () { 
-        alert('Surprise');
-    });
+// 首先让元素淡入并且水平移动10像素
+var action = runner.transition(
+    ele,
+    { opacity: 1, tranform: 'translate3d(10px, 0, 0)' },
+    { duration: 3, timing: 'ease-out' }
+);
+
+// 然后在动画完成后再做点啥
+action.then(function () { 
+    alert('Surprise');
+});
+```
 
 ## API
 
@@ -56,3 +58,7 @@
 #### .now()
 
 获取当前的时间戳
+
+===
+
+[![Saber](https://f.cloud.github.com/assets/157338/1485433/aeb5c72a-4714-11e3-87ae-7ef8ae66e605.png)](http://ecomfe.github.io/saber/)
