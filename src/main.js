@@ -14,7 +14,7 @@ define(function (require) {
     }
 
     extend(exports, require('./transition'));
-    extend(exports, require('./animation'));
+    extend(exports, require('./util'));
 
     return exports;
 });

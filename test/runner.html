@@ -40,7 +40,7 @@
                 return htmlReporter.specFilter(spec);
             };
 
-            require(['transition', 'animation'], function() {
+            require(['transition', 'util'], function() {
                 jasmineEnv.execute();
             });
         })();

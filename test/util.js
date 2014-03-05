@@ -6,7 +6,7 @@
 define(function (require) {
     var runner = require('saber-run');
 
-    describe('animation', function () {
+    describe('util', function () {
         it('.requestAnimationFrame', function () {
             var res = false;
             runner.requestAnimationFrame(function () {
