@@ -39,6 +39,12 @@ define(function (require) {
                 );
             });
 
+            it('should not start animation when had no action', function () {
+                var oldPromise = animation.promise;
+                animation.run();
+                expect(animation.promise).toBe(oldPromise);
+            });
+
             it('should start multi animations', function (done) {
                 animation
                     .set('width', '200px')

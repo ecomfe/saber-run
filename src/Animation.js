@@ -173,6 +173,11 @@ define(function (require) {
     Animation.prototype.run = function () {
         var ele = this.main;
         var action = extend({}, this.action);
+
+        if (Object.keys(action).length <= 0) {
+            return this;
+        }
+
         var options = this.options;
 
         this.reset();
