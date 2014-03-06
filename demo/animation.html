@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="cxl" />
+    <title>Animation Demo</title>
+    <link rel="stylesheet" type="text/css" href="animation.css">
+    <script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/1-6-6/esl.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="box" id="box"></div>
+    </div>
+    <div class="panel" id="panel">
+        <h3>Methods</h3>
+        <p class="item" data-method="move"><strong>.move</strong>(<input type="text" value="10, 10"/>)</p>
+        <p class="item" data-method="moveTo"><strong>.moveTo</strong>(<input type="text" value="100, 100"/>)</p>
+        <div class="opt"><input value="Run" type="button" id="btn"/></div>
+    </div>
+    <script>
+        require.config({
+            packages: [
+                {
+                    name: 'saber-run',
+                    location: '../src'
+                },
+                {
+                    name: 'saber-dom',
+                    location: './dep/saber-dom/0.3.0/src'
+                },
+                {
+                    name: 'saber-lang',
+                    location: './dep/saber-lang/0.2.0/src'
+                },
+                {
+                    name: 'saber-promise',
+                    location: './dep/saber-promise/0.1.2-beta.3/src',
+                    main: 'promise'
+                }
+            ]
+        });
+
+        require(['animation'], function (animation) {
+            animation.enter();
+        });
+    </script>
+</body>
+</html>
