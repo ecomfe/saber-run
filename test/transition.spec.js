@@ -4,7 +4,7 @@
  */
 
 define(function (require) {
-    var runner = require('saber-run');
+    var runner = require('saber-run/transition');
 
     describe('transition', function () {
 

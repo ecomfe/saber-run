@@ -14,7 +14,8 @@
     "test": "./node_modules/.bin/karma run"
   },
   "dependencies": {
-    "saber-promise": "~0.1.0",
+    "saber-promise": "~0.1.2",
+    "saber-lang": "~0.2.0",
     "saber-dom": "~0.3.0"
   },
   "license": "BSD",

@@ -5,16 +5,17 @@
 
 define(function (require) {
 
+    var extend = require('saber-lang/extend');
+    var Animation = require('./Animation');
+
     var exports = {};
     
-    function extend(target, source) {
-        Object.keys(source).forEach(function (key) {
-            target[key] = source[key];
-        });
-    }
-
     extend(exports, require('./transition'));
     extend(exports, require('./util'));
+
+    exports.animation = function (ele, options) {
+        return new Animation(ele, options);
+    };
 
     return exports;
 });

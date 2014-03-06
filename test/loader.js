@@ -20,6 +20,10 @@ requirejs.config({
             location: './test/dep/saber-dom/0.3.0/src'
         },
         {
+            name: 'saber-lang',
+            location: './test/dep/saber-lang/0.2.0/src'
+        },
+        {
             name: 'saber-run',
             location: './src'
         }

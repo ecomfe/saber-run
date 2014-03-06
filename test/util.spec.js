@@ -4,24 +4,24 @@
  */
 
 define(function (require) {
-    var runner = require('saber-run');
+    var util = require('saber-run/util');
 
     describe('util', function () {
 
         it('.requestAnimationFrame should fire animation callback', function (done) {
-            runner.requestAnimationFrame(function () {
+            util.requestAnimationFrame(function () {
                 expect(true).toBeTruthy();
                 done();
             });
         });
 
         it('.cancelAnimationFrame should cancel animation', function (done) {
-            var id = runner.requestAnimationFrame(function () {
+            var id = util.requestAnimationFrame(function () {
                 expect(true).toBeFalsy();
                 done();
             });
 
-            runner.cancelAnimationFrame(id);
+            util.cancelAnimationFrame(id);
 
             setTimeout(function () {
                 expect(false).toBeFalsy();
