@@ -17,7 +17,7 @@ define(function (require) {
         ];
 
     var detectEle = document.createElement('div');
-    var prefixes = ['webkit', 'ms', 'o']
+    var prefixes = ['webkit', 'ms', 'o'];
 
     /**
      * 将CSS属性驼峰化
@@ -113,27 +113,38 @@ define(function (require) {
      * @param {Object} options 参数
      * @param {Object} properties 要改变的属性
      * @param {number=} options.duration 持续时间 单位秒
-     * @param {string=} options.timing 缓动效果 
+     * @param {string=} options.ease 缓动效果 
+     * @param {string=} options.timing 缓动效果(!已抛弃)
      * @param {number=} options.delay 延时 单位秒
      * @return {Promise}
      */
     exports.transition = function (ele, properties, options) {
 
+        var resolver = new Resolver();
         if (!properties) {
-            return;
+            return resolver.resolved();
         }
 
-        options.timing = options.timing || 'ease';
+        options.ease = options.ease || options.timing || 'ease';
         options.delay = options.delay || 0;
         options.duration = options.duration || 0;
 
         var propertyNames = [];
+        var oldStyles = {};
+
+        // 防止样式刷新
+        // get 与 set 不能在一起...(>_<)...
         Object.keys(properties).forEach(function (name) {
-            propertyNames.push(name);
-            dom.setStyle(ele, name, properties[name]);
+            oldStyles[name] = dom.getStyle(ele, name);
         });
 
-        var resolver = new Resolver();
+        Object.keys(properties).forEach(function (name) {
+            if (oldStyles[name] != properties[name]) {
+                propertyNames.push(name);
+                dom.setStyle(ele, name, properties[name]);
+            }
+        });
+
         var callback = function (e) {
             // transitionend会根据设置的transition-property依次触发
             // 所以将最后一个transitionend作为整体的结束
@@ -149,21 +160,22 @@ define(function (require) {
             }
             return res;
         };
-        if (options.duration) {
+
+        if (propertyNames.length > 0 && options.duration) {
             exports.oneTransitionEnd(ele, callback);
+
+            propertyNames.forEach(function (property, index) {
+                propertyNames[index] = detectProperty(property);
+            });
+
+            dom.setStyle(ele, 'transition-property', propertyNames.join(','));
+            dom.setStyle(ele, 'transition-duration', options.duration + 's');
+            dom.setStyle(ele, 'transition-timing-function', options.ease);
+            dom.setStyle(ele, 'transition-delay', options.delay + 's');
         }
         else {
             resolver.fulfill();
         }
-
-        propertyNames.forEach(function (property, index) {
-            propertyNames[index] = detectProperty(property);
-        });
-
-        dom.setStyle(ele, 'transition-property', propertyNames.join(','));
-        dom.setStyle(ele, 'transition-duration', options.duration + 's');
-        dom.setStyle(ele, 'transition-timing-function', options.timing);
-        dom.setStyle(ele, 'transition-delay', options.delay + 's');
 
         return resolver.promise();
     };
