@@ -53,6 +53,80 @@ define(function (require) {
             'ease-in-out-back': 'cubic-bezier(0.680, -0.550, 0.265, 1.550)'
         };
 
+    var REG_TRANSFORM = /([^(]+)\(([^)]+)\)/g;
+
+    /**
+     * 解析transform属性
+     *
+     * @inner
+     * @param {string} str
+     * @return {Object}
+     */
+    function parseTransform(str) {
+        var res = {};
+
+        str.replace(REG_TRANSFORM, function ($0, $1, $2) {
+            res[$1.trim()] = $2.trim();
+        });
+
+        return res;
+    }
+
+    /**
+     * 字符串化transform属性
+     *
+     * @inner
+     * @param {Object} obj
+     * @return {string}
+     */
+    function stringifyTransform(obj) {
+        var res = [];
+
+        Object.keys(obj).forEach(function (key) {
+            res.push(key + '(' + obj[key] + ')');
+        });
+
+        return res.join(' ');
+    }
+
+    /**
+     * 设置动作
+     * 处理样式
+     *
+     * @inner
+     * @param {Object} properties 样式属性
+     * @param {Object} action 动作集合
+     * @return {Object}
+     */
+    function setAction(properties, action) {
+        var value;
+        Object.keys(properties).forEach(function (property) {
+            value = properties[property];
+            if (property == 'transform') {
+                properties = parseTransform(action[property] || '');
+                value = parseTransform(value);
+                properties = extend(properties, value);
+                action[property] = stringifyTransform(properties);
+            }
+            else {
+                action[property] = value;
+            }
+        });
+
+        return action;
+    }
+
+    /**
+     * 动画
+     * 支持链式调用
+     *
+     * @constructor
+     * @param {HTMLElement} ele DOM元素
+     * @param {Object=} options 配置选项
+     * @param {number=} options.duration 默认动画时长
+     * @param {number=} options.delay 默认延迟时间
+     * @param {string=} options.ease 默认缓动效果
+     */
     function Animation(ele, options) {
         this.action = {};
         this.options = {};
@@ -62,8 +136,8 @@ define(function (require) {
         options = options || {};
         this.defaultOptions.duration = options.duration || Animation.DURATION;
         this.defaultOptions.delay = options.delay || Animation.DELAY;
-        this.defaultOptions.timing = TIMING_FUNCTION[options.timing]
-                                || TIMING_FUNCTION[Animation.TIMING];
+        this.defaultOptions.ease = TIMING_FUNCTION[options.ease]
+                                || TIMING_FUNCTION[Animation.EASE];
 
         this.reset();
 
@@ -75,7 +149,7 @@ define(function (require) {
     // 默认的动画延迟时间
     Animation.DELAY = 0;
     // 默认的动画缓动效果
-    Animation.TIMING = 'default';
+    Animation.EASE = 'default';
 
     /**
      * 注册动作
@@ -110,7 +184,9 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.set = function (property, value) {
-        this.action[property] = value;
+        var data = {};
+        data[property] = value;
+        setAction(data, this.action);
         return this;
     };
 
@@ -148,7 +224,8 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.ease = function (name) {
-        this.options.timing = TIMING_FUNCTION[name] || TIMING_FUNCTION['default'];
+        this.options.ease = TIMING_FUNCTION[name]
+                                || TIMING_FUNCTION['default'];
         return this;
     };
 
@@ -183,14 +260,18 @@ define(function (require) {
         this.reset();
         this.promise = this.promise.then(function () {
             var item;
+
             Object.keys(action).forEach(function (key) {
                 item = action[key];
+                // 如果动作是一个function
+                // 则将其执行后的返回结果作为动作
                 if (typeof item == 'function') {
                     item = item(ele) || {};
                     delete action[key];
-                    extend(action, item);
+                    setAction(item, action);
                 }
             });
+
             return runner.transition(ele, action, options);
         });
 
@@ -209,7 +290,6 @@ define(function (require) {
         return this;
     };
 
-    // 添加`moveTo`动作
     Animation.addAction(
         'moveTo', 
         /**
@@ -257,6 +337,120 @@ define(function (require) {
                         res.top = y + 'px';
                     }
                     return res;
+                }
+            };
+        }
+    );
+
+    Animation.addAction(
+        'rotateTo',
+        /**
+         * 旋转
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (deg) {
+            return {
+                transfor: 'rotate(' + deg + 'deg)'
+            };
+        }
+    );
+
+    Animation.addAction(
+        'rotate',
+        /**
+         * 旋转
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (deg) {
+            return {
+                rotate: function (ele) {
+                    var items = parseTransform(dom.getStyle(ele, 'transform'));
+                    deg += parseInt(items.rotate || '0', 10);
+                    return {
+                        transform: 'rotate(' + deg + 'deg)'
+                    };
+                }
+            };
+        }
+    );
+
+    Animation.addAction(
+        'skewTo',
+        /**
+         * 倾斜
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (deg) {
+            return {
+                transform: 'skew(' + deg + 'deg)'
+            };
+        }
+    );
+
+    Animation.addAction(
+        'skew',
+        /**
+         * 倾斜
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (deg) {
+            return {
+                skew: function (ele) {
+                    var items = parseTransform(dom.getStyle(ele, 'transform'));
+                    deg += parseInt(items.skew || '0', 10);
+                    return {
+                        transform: 'skew(' + deg + 'deg)'
+                    };
+                }
+            };
+        }
+    );
+
+    Animation.addAction(
+        'scaleTo',
+        /**
+         * 放大缩小
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (rate) {
+            return {
+                transform: 'scale(' + rate + ')'
+            };
+        }
+    );
+
+    Animation.addAction(
+        'scale',
+        /**
+         * 放大缩小
+         *
+         * @public
+         * @param {number} deg
+         * @return {Animation}
+         */
+        function (rate) {
+            return {
+                scale: function (ele) {
+                    var items = parseTransform(dom.getStyle(ele, 'transform'));
+                    rate += parseFloat(items.scale || '1');
+                    return {
+                        transform: 'scale(' + rate + ')'
+                    };
                 }
             };
         }

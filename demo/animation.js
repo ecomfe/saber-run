@@ -4,10 +4,15 @@ define(function (require) {
 
     var view = {};
 
-    function parseNumber(args) {
+    function parseNumber(args, parser) {
 
         args.forEach(function (item, index) {
-            item = parseInt(item, 10);
+            if (parser) {
+                item = parser(item);
+            }
+            else {
+                item = parseInt(item, 10);
+            }
             if (isNaN(item)) {
                 args[index] = null;
             }
@@ -21,7 +26,12 @@ define(function (require) {
 
     var argumentParser = {
             move: parseNumber,
-            moveTo: parseNumber
+            moveTo: parseNumber,
+            rotate: parseNumber,
+            skew: parseNumber,
+            scale: function (args) {
+                return parseNumber(args, parseFloat);
+            }
         };
 
     function initView() {
