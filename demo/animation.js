@@ -31,6 +31,15 @@ define(function (require) {
             skew: parseNumber,
             scale: function (args) {
                 return parseNumber(args, parseFloat);
+            },
+            scaleTo: function (args) {
+                return parseNumber(args, parseFloat);
+            },
+            duration: function (args) {
+                return parseNumber(args, parseFloat);
+            },
+            delay: function (args) {
+                return parseNumber(args, parseFloat);
             }
         };
 
