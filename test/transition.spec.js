@@ -57,6 +57,37 @@ define(function (require) {
                 });
             });
 
+            it('should return resolved promise when noting happened', function (done) {
+                var promise = runner.transition();
+                promise.then(function () {
+                    expect(true).toBeTruthy();
+                    done();
+                });
+            });
+
+            it('should return resolved promise without duration', function (done) {
+                var promise = runner.transition(ele, {width: '200px'});
+                promise.then(function () {
+                    expect(ele.style.width).toEqual('200px');
+                    done();
+                });
+            });
+
+            it('should return resolved promise when property not change', function (done) {
+                var promise = runner.transition(
+                        ele,
+                        {
+                            width: '100px'
+                        },
+                        { duration: 0.5 }
+                    );
+
+                promise.then(function () {
+                    expect(ele.style.width).toEqual('100px');
+                    done();
+                });
+            });
+
         });
 
     });
