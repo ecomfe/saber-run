@@ -120,11 +120,11 @@ define(function (require) {
      */
     exports.transition = function (ele, properties, options) {
 
-        var resolver = new Resolver();
-        if (!properties) {
-            return resolver.resolved();
+        if (!ele || !properties) {
+            return Resolver.resolved();
         }
 
+        options = options || {};
         options.ease = options.ease || options.timing || 'ease';
         options.delay = options.delay || 0;
         options.duration = options.duration || 0;
@@ -144,6 +144,8 @@ define(function (require) {
                 dom.setStyle(ele, name, properties[name]);
             }
         });
+
+        var resolver = new Resolver();
 
         var callback = function (e) {
             // transitionend会根据设置的transition-property依次触发
