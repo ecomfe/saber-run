@@ -115,6 +115,10 @@ animation.set('width', '200px');
 
 执行动画
 
+#### .end()
+
+结束动画，所有属性立即变为最终值
+
 #### .finish( callback )
 
 注册动画执行完成后的回调函数，只针对单次动画有效
@@ -199,7 +203,7 @@ animation
 
 #### .stopTransition( ele )
 
-停止元素的transition效果
+停止元素的transition效果，所有属性立即变为最终值
 
 * `ele` `{HTMLElement}` DOM元素
 
