@@ -20,6 +20,89 @@ define(function (require) {
     var prefixes = ['webkit', 'ms', 'o'];
 
     /**
+     * 事件列表
+     * 用于额外保存`transitionend`事件
+     *
+     * @type {Array}
+     */
+    var eventList = [];
+
+    /**
+     * DOM自定义属性名称
+     * 用于保存`transitionend`事件序列号
+     *
+     * @const
+     * @type {string}
+     */
+    var EVENT_INDEX = 'data-transition-event';
+
+    /**
+     * 保存事件
+     *
+     * @inner
+     * @param {HTMLElement} ele
+     * @param {Function} callback
+     */
+    function attachEndEvent(ele, callback) {
+        var items;
+        var index = ele.getAttribute(EVENT_INDEX);
+        if (index) {
+            index = parseInt(index, 10);
+            items = eventList[index];
+        }
+        else {
+            index = eventList.length;
+            ele.setAttribute(EVENT_INDEX, index);
+        }
+        items = items || [];
+        items.push(callback);
+        eventList[index] = items;
+    }
+
+    /**
+     * 删除事件
+     *
+     * @inner
+     * @param {HTMLElement} ele
+     * @param {Function} callback
+     */
+    function detachEndEvent(ele, callback) {
+        var index = ele.getAttribute(EVENT_INDEX);
+
+        if (!index) {
+            return;
+        }
+
+        index = parseInt(index, 10);
+        var items = eventList[index] || [];
+        items.some(function (item, index, items) {
+            return item == callback 
+                    && items.splice(index, 1);
+        });
+    }
+
+    /**
+     * 触发保存的事件
+     *
+     * @inner
+     * @param {HTMLElement} ele
+     */
+    function fireEndEvent(ele) {
+        var index = ele.getAttribute(EVENT_INDEX);
+
+        if (!index) {
+            return;
+        }
+
+        index = parseInt(index, 10);
+        var items = eventList[index] || [];
+
+        items.forEach(function (item) {
+            item.call(ele, true);
+        });
+    }
+
+    /**
      * 将CSS属性驼峰化
      * 
      * @param {string} target 目标字符串
@@ -72,6 +155,9 @@ define(function (require) {
         transitionEndEvents.forEach(function (eventName) {
             ele.addEventListener(eventName, callback, useCapture || false);
         });
+        // 额外保存完成回调
+        // 供`stop`时手动调用回调
+        attachEndEvent(ele, callback);
     };
 
     /**
@@ -86,6 +172,8 @@ define(function (require) {
         transitionEndEvents.forEach(function (name) {
             ele.removeEventListener(name, callback, useCapture || false);
         });
+        // 删除之前额外保存的回调
+        detachEndEvent(ele, callback);
     };
 
     /**
@@ -151,13 +239,13 @@ define(function (require) {
             // transitionend会根据设置的transition-property依次触发
             // 所以将最后一个transitionend作为整体的结束
             var res = true;
-            if (propertyNames.length <= 1) {
+            if (e === true || propertyNames.length <= 1) {
                 resolver.fulfill();
                 // 恢复默认设置
                 dom.setStyle(ele, 'transition', '');
             }
             else {
-                propertyNames.splice(propertyNames.indexOf(e.propertyName), 1);
+                propertyNames.pop();
                 res = false;
             }
             return res;
@@ -190,6 +278,10 @@ define(function (require) {
      */
     exports.stopTransition = function (ele) {
         dom.setStyle(ele, 'transition-property', 'none');
+        // 通过修改`transition-property`
+        // 停止动画不会触发`transitionend`事件
+        // 手动触发下
+        fireEndEvent(ele);
     };
 
     return exports;
