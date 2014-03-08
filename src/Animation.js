@@ -242,6 +242,18 @@ define(function (require) {
     };
 
     /**
+     * 结束动画
+     * 所有属性立即变为最终值
+     *
+     * @public
+     * @return {Animation}
+     */
+    Animation.prototype.end = function () {
+        runner.stopTransition(this.main);
+        return this;
+    };
+
+    /**
      * 执行动画
      *
      * @public

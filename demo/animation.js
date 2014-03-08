@@ -46,7 +46,8 @@ define(function (require) {
     function initView() {
         view.panel = document.getElementById('panel');
         view.animation = runner.animation(document.getElementById('box'));
-        view.btn = document.getElementById('btn');
+        view.btnRun = document.getElementById('btnRun');
+        view.btnEnd = document.getElementById('btnEnd');
     }
 
     function methodItemClick(ele) {
@@ -78,7 +79,7 @@ define(function (require) {
             }
         };
 
-        view.btn.onclick = function () {
+        view.btnRun.onclick = function () {
             var items = view.panel.querySelectorAll('p.item-active');
 
             if (items.length <= 0) {
@@ -99,10 +100,16 @@ define(function (require) {
                 view.animation[method].apply(view.animation, args);
             }
             
-            view.btn.disabled = true;
+            view.btnRun.disabled = true;
+            view.btnEnd.disabled = false;
             view.animation.run().finish(function () {
-                view.btn.disabled = false;
+                view.btnRun.disabled = false;
+                view.btnEnd.disabled = true;
             });
+        };
+
+        view.btnEnd.onclick = function () {
+            view.animation.end();
         };
     }
     
