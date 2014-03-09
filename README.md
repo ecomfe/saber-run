@@ -1,4 +1,4 @@
-# saber-run
+# saber-run [![Build Status](https://travis-ci.org/ecomfe/saber-run.png?branch=master)](https://travis-ci.org/ecomfe/saber-run)
 
 移动端动画效果支持
 
