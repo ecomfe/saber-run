@@ -128,20 +128,20 @@ define(function (require) {
      * @param {string=} options.ease 默认缓动效果
      */
     function Animation(ele, options) {
-        this.action = {};
-        this.options = {};
-        this.defaultOptions = {};
-        this.main = ele;
+        this._action = {};
+        this._options = {};
+        this._defaultOptions = {};
+        this._main = ele;
 
         options = options || {};
-        this.defaultOptions.duration = options.duration || Animation.DURATION;
-        this.defaultOptions.delay = options.delay || Animation.DELAY;
-        this.defaultOptions.ease = TIMING_FUNCTION[options.ease]
+        this._defaultOptions.duration = options.duration || Animation.DURATION;
+        this._defaultOptions.delay = options.delay || Animation.DELAY;
+        this._defaultOptions.ease = TIMING_FUNCTION[options.ease]
                                 || TIMING_FUNCTION[Animation.EASE];
 
         this.reset();
 
-        this.promise = Resolver.resolved();
+        this._promise = Resolver.resolved();
     }
 
     // 默认的动画时间间隔
@@ -186,7 +186,7 @@ define(function (require) {
     Animation.prototype.set = function (property, value) {
         var data = {};
         data[property] = value;
-        setAction(data, this.action);
+        setAction(data, this._action);
         return this;
     };
 
@@ -199,7 +199,7 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.duration = function (value) {
-        this.options.duration = value;
+        this._options.duration = value;
         return this;
     };
 
@@ -212,7 +212,7 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.delay = function (value) {
-        this.options.delay = value;
+        this._options.delay = value;
         return this;
     };
 
@@ -224,7 +224,7 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.ease = function (name) {
-        this.options.ease = TIMING_FUNCTION[name]
+        this._options.ease = TIMING_FUNCTION[name]
                                 || TIMING_FUNCTION['default'];
         return this;
     };
@@ -236,8 +236,8 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.reset = function () {
-        this.action = {};
-        this.options = extend({}, this.defaultOptions);
+        this._action = {};
+        this._options = extend({}, this._defaultOptions);
         return this;
     };
 
@@ -249,7 +249,7 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.end = function () {
-        runner.stopTransition(this.main);
+        runner.stopTransition(this._main);
         return this;
     };
 
@@ -260,17 +260,17 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.run = function () {
-        var ele = this.main;
-        var action = extend({}, this.action);
+        var ele = this._main;
+        var action = extend({}, this._action);
 
         if (Object.keys(action).length <= 0) {
             return this;
         }
 
-        var options = this.options;
+        var options = this._options;
 
         this.reset();
-        this.promise = this.promise.then(function () {
+        this._promise = this._promise.then(function () {
             var item;
 
             Object.keys(action).forEach(function (key) {
@@ -298,7 +298,7 @@ define(function (require) {
      * @return {Animation}
      */
     Animation.prototype.finish = function (callback) {
-        this.promise.then(callback);
+        this._promise.then(callback);
         return this;
     };
 
