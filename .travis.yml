@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 0.10
+before_install:
+  - npm install karma --save-dev
+  - npm install karma-requirejs@0.2.1 --save-dev
+  - git clone https://github.com/ecomfe/saber-dom.git test/dep/saber-dom/0.3.0
+  - git clone https://github.com/ecomfe/saber-lang.git test/dep/saber-lang/0.2.0
+  - git clone https://github.com/ecomfe/saber-promise.git test/dep/saber-promise/0.1.2-beta.3
+install: true

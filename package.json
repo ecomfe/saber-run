@@ -10,8 +10,7 @@
     }
   ],
   "scripts": {
-    "start": "./node_modules/.bin/karma start ./test/karma.conf.js",
-    "test": "./node_modules/.bin/karma run"
+    "test": "./node_modules/.bin/karma start ./test/karma.conf.js --single-run --browsers PhantomJS"
   },
   "dependencies": {
     "saber-promise": "~0.1.2",
