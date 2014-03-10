@@ -9,16 +9,8 @@ html, body {
     top: 10px;
     left: 10px;
     bottom: 10px;
-    right: 270px;
+    right: 150px;
     border: 1px solid #CCC;
-}
-
-.panel {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 250px;
-    bottom: 10px;
 }
 
 .box {
@@ -28,6 +20,29 @@ html, body {
     height: 60px;
     width: 60px;
     background: #333;
+}
+
+.panel {
+    position: absolute;
+    font-size: 12px;
+    top: 5px;
+    right: 5px;
+    width: 140px;
+    bottom: 5px;
+}
+
+.panel .content {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    left: 0;
+    bottom: 20px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.panel input[type=text] {
+    width: 30px;
 }
 
 .panel h3 {
@@ -50,6 +65,9 @@ html, body {
 }
 
 .panel .opt {
-    margin-top: 20px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     text-align: center;
 }

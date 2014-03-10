@@ -72,6 +72,10 @@ define(function (require) {
             e = e || window.event;
             var target = e.target || e.srcElement;
 
+            if (target.tagName.toLowerCase() == 'strong') {
+                target = target.parentNode;
+            }
+
             if (target.tagName.toLowerCase() == 'p'
                 && target.className.indexOf('item') >= 0
             ) {
