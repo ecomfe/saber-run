@@ -8,23 +8,25 @@ define(function (require) {
 
     describe('transition', function () {
 
+        var ele; 
+
+        beforeEach(function () {
+            ele = document.createElement('div');
+            ele.style.width = '100px';
+            ele.style.height = '100px';
+            document.body.appendChild(ele);
+            // 强制刷新
+            !!ele.offsetHeight;
+        });
+
+        afterEach(function () {
+            if (ele) {
+                ele.parentNode.removeChild(ele);
+            }
+        });
+
+
         describe('.transition', function () {
-            var ele; 
-
-            beforeEach(function () {
-                ele = document.createElement('div');
-                ele.style.width = '100px';
-                ele.style.height = '100px';
-                document.body.appendChild(ele);
-                // 强制刷新
-                !!ele.offsetHeight;
-            });
-
-            afterEach(function () {
-                if (ele) {
-                    ele.parentNode.removeChild(ele);
-                }
-            });
 
             it('should set one property', function (done) {
                 var promise = runner.transition(
@@ -86,6 +88,155 @@ define(function (require) {
                     expect(ele.style.width).toEqual('100px');
                     done();
                 });
+            });
+
+        });
+
+        describe('.stopTransition', function () {
+
+            it('should stop transition and fire end event', function (done) {
+                var promise = runner.transition(
+                        ele,
+                        {
+                            width: '200px'
+                        },
+                        { duration: 5 }
+                    );
+
+                var before = Date.now();
+                promise.then(function () {
+                    var now = Date.now();
+                    expect(ele.style.width).toEqual('200px');
+                    expect(now - before).toBeLessThan(1000);
+                    expect(now - before >= 300).toBeTruthy();
+                    done();
+                });
+
+                setTimeout(function () {
+                    runner.stopTransition(ele);
+                }, 300);
+            });
+
+        });
+
+        describe('.onTransitionEnd', function () {
+
+            it('should attach end event', function (done) {
+                function callback() {
+                    expect(ele.style.width).toEqual('200px');
+                    done();
+                }
+
+                runner.onTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 0.3});
+            });
+
+            it('attach event should fired after stop transition', function (done) {
+                function callback() {
+                    expect(ele.style.width).toEqual('200px');
+                    done();
+                }
+
+                runner.onTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 5});
+
+                setTimeout(function () {
+                    runner.stopTransition(ele);
+                }, 300);
+            });
+
+        });
+
+        describe('.unTransitionEnd', function () {
+
+            it('should detach end event', function (done) {
+
+                var count = 0;
+                function callback() {
+                    count++; 
+                }
+
+                runner.onTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 0.1})
+                    .then(function () {
+                        runner.unTransitionEnd(ele, callback);
+                        runner.transition(ele, {width: '250px'}, {duration: 0.1})
+                            .then(function () {
+                                expect(count).toBe(1);
+                                done();
+                            });
+                    });
+
+            });
+
+            it('detach end event should not fire after stop transition', function (done) {
+
+                var count = 0;
+                function callback() {
+                    count++; 
+                }
+
+                runner.onTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 0.1})
+                    .then(function () {
+                        runner.unTransitionEnd(ele, callback);
+                        runner.transition(ele, {width: '250px'}, {duration: 5});
+                        setTimeout(function () {
+                            runner.stopTransition(ele);
+                            expect(count).toBe(1);
+                            done();
+                        }, 300);
+                    });
+
+            });
+        });
+
+        describe('.oneTransitionEnd', function () {
+
+            it('should attach event and detach event after fire', function (done) {
+
+                var count = 0;
+                function callback() {
+                    count++; 
+                }
+
+                runner.oneTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 0.1})
+                    .then(function () {
+                        runner.transition(ele, {width: '250px'}, {duration: 0.1})
+                            .then(function () {
+                                expect(count).toBe(1);
+                                done();
+                            });
+                        });
+
+            });
+
+            it('should attach event and detach event after stop', function (done) {
+
+                var count = 0;
+                function callback() {
+                    count++; 
+                }
+
+                runner.oneTransitionEnd(ele, callback);
+
+                runner.transition(ele, {width: '200px'}, {duration: 5});
+
+                setTimeout(function () {
+                    runner.stopTransition(ele);
+                    runner.transition(ele, {width: '250px'}, {duration: 0.1})
+                        .then(function () {
+                            expect(count).toBe(1);
+                            done();
+                        });
+                }, 300);
+
             });
 
         });
