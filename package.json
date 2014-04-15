@@ -1,6 +1,6 @@
 {
   "name": "saber-run",
-  "version": "0.2.0-beta.1",
+  "version": "0.2.0",
   "description": "移动端动画效果支持",
   "main": "main",
   "maintainers": [
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "saber-promise": "~0.1.2",
-    "saber-lang": "~0.2.0",
-    "saber-dom": "~0.3.0"
+    "saber-lang": "~0.3.0",
+    "saber-dom": "~0.4.0"
   },
   "license": "BSD",
   "repository": "git://github.com/ecomfe/saber-run.git",
