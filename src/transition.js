@@ -108,8 +108,8 @@ define(function (require) {
      * @param {string} target 目标字符串
      * @return {string}
      */
-    function camelize( target ) {
-        return target.replace(/-+(.)?/g, function( match, chr ) {
+    function camelize(target) {
+        return target.replace(/-+(.)?/g, function(match, chr) {
             return chr ? chr.toUpperCase() : '';
         });
     }
@@ -198,7 +198,7 @@ define(function (require) {
      * 设置transition
      *
      * @public
-     * @param {Object} options 参数
+     * @param {HTMLElement} ele DOM元素
      * @param {Object} properties 要改变的属性
      * @param {number=} options.duration 持续时间 单位秒
      * @param {string=} options.ease 缓动效果 

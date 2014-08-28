@@ -12,14 +12,18 @@ define(function () {
         || window.mozRequestAnimationFrame
         || window.oRequestAnimationFrame
         || window.msRequestAnimationFrame
-        || function (callback) {return setTimeout(callback, 1000 / 60);};
+        || function (callback) {
+            return setTimeout(callback, 1000 / 60);
+        };
 
     var cRAF = window.cancelAnimationFrame
         || window.webkitCancelAnimationFrame                    
         || window.mozCancelAnimationFrame                    
         || window.oCancelAnimationFrame                    
         || window.msCancelAnimationFrame                    
-        || function (idenity) {clearTimeout(idenity);};
+        || function (idenity) {
+            clearTimeout(idenity);
+        };
 
     /**
      * 添加动画帧

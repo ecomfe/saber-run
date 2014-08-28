@@ -436,7 +436,7 @@ define(function (require) {
          * 放大缩小
          *
          * @public
-         * @param {number} deg
+         * @param {number} rate
          * @return {Animation}
          */
         function (rate) {
@@ -452,7 +452,7 @@ define(function (require) {
          * 放大缩小
          *
          * @public
-         * @param {number} deg
+         * @param {number} rate
          * @return {Animation}
          */
         function (rate) {
