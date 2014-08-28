@@ -141,7 +141,7 @@ define(function (require) {
 
         this.reset();
 
-        this._promise = Resolver.resolved();
+        this._promise = Resolver.resolved(ele);
     }
 
     // 默认的动画时间间隔

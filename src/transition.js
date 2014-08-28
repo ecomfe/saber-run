@@ -209,7 +209,7 @@ define(function (require) {
     exports.transition = function (ele, properties, options) {
 
         if (!ele || !properties) {
-            return Resolver.resolved();
+            return Resolver.resolved(ele);
         }
 
         options = options || {};
@@ -240,7 +240,7 @@ define(function (require) {
             // 所以将最后一个transitionend作为整体的结束
             var res = true;
             if (e === true || propertyNames.length <= 1) {
-                resolver.fulfill();
+                resolver.fulfill(ele);
                 // 恢复默认设置
                 dom.setStyle(ele, 'transition', '');
             }
@@ -264,7 +264,7 @@ define(function (require) {
             dom.setStyle(ele, 'transition-delay', options.delay + 's');
         }
         else {
-            resolver.fulfill();
+            resolver.fulfill(ele);
         }
 
         return resolver.promise();

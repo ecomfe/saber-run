@@ -90,6 +90,40 @@ define(function (require) {
                 });
             });
 
+            it('should return resolved promise fulfilled by element when property not change', function (done) {
+                var promise = runner.transition(
+                    ele,
+                    {
+                        width: '100px'
+                    },
+                    {
+                        duration: 0.5
+                    }
+                );
+
+                promise.then(function (e) {
+                    expect(e).toBe(ele);
+                    done();
+                });
+            });
+
+            it('should return resolved promise fulfilled by element after property changed', function (done) {
+                var promise = runner.transition(
+                    ele,
+                    {
+                        width: '200px'
+                    },
+                    {
+                        duration: 0.5
+                    }
+                );
+
+                promise.then(function (e) {
+                    expect(e).toBe(ele);
+                    done();
+                });
+            });
+
         });
 
         describe('.stopTransition', function () {
