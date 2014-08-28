@@ -302,6 +302,15 @@ define(function (require) {
         return this;
     };
 
+    /**
+     * 销毁动画对象
+     *
+     * @public
+     */
+    Animation.prototype.dispose = function () {
+        this._main = null;
+    };
+
     Animation.addAction(
         'moveTo', 
         /**

@@ -217,5 +217,13 @@ define(function (require) {
             });
 
         });
+
+        describe('.dispose', function () {
+            it('should unlink element', function () {
+                expect(animation._main).toBe(element);
+                animation.dispose();
+                expect(animation._main).not.toBe(element);
+            });
+        });
     });
 });
