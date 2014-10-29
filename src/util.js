@@ -46,18 +46,5 @@ define(function () {
         cRAF.call(window, idenity);
     };
 
-    /**
-     * 获取当前的时间戳
-     * 单位毫秒
-     *
-     * @public
-     * @return {number}
-     */
-    exports.now = function () {
-        return Date.now 
-                ? Date.now()
-                : new Date().getTime();
-    };
-
     return exports;
 });
