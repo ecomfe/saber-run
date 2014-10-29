@@ -128,3 +128,7 @@ animation
 
 * **rate** `{number=}` 比例
 * _return_ `{Animation}`
+
+### dispose()
+
+销毁动画对象

@@ -46,14 +46,14 @@ animation
 
 #### animation(ele[, options])
 
-创建动画对象, 返回[Animation](doc/animation)实例
+创建动画对象, 返回[Animation](doc/animation.md)实例
 
 * **ele** `{HTMLElement}` 需要进行动画的DOM元素
 * **options** `{Object=}` 默认动画配置参数
     * **duration** `{number=}` 默认动画时长
     * **delay** `{number=}` 默认动画延时
     * **ease** `{string=}` 默认缓动效果
-* _return_ `{Animation}` [Animation](doc/animation)动画对象
+* _return_ `{Animation}` [Animation](doc/animation.md)动画对象
 
 缓动效果如下 参考[move.js](https://github.com/visionmedia/move.js)：
 
@@ -149,4 +149,4 @@ animation
 
 ### Classes
 
-* [Animation](doc/animation) 动画对象
+* [Animation](doc/animation.md) 动画对象
