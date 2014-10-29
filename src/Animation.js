@@ -102,7 +102,7 @@ define(function (require) {
         var value;
         Object.keys(properties).forEach(function (property) {
             value = properties[property];
-            if (property == 'transform') {
+            if (property === 'transform') {
                 properties = parseTransform(action[property] || '');
                 value = parseTransform(value);
                 properties = extend(properties, value);
@@ -277,7 +277,7 @@ define(function (require) {
                 item = action[key];
                 // 如果动作是一个function
                 // 则将其执行后的返回结果作为动作
-                if (typeof item == 'function') {
+                if (typeof item === 'function') {
                     item = item(ele) || {};
                     delete action[key];
                     setAction(item, action);
@@ -312,7 +312,7 @@ define(function (require) {
     };
 
     Animation.addAction(
-        'moveTo', 
+        'moveTo',
         /**
          * 移动到某位置
          *
@@ -334,7 +334,7 @@ define(function (require) {
     );
 
     Animation.addAction(
-        'move', 
+        'move',
         /**
          * 在原有基础上移动
          *

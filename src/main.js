@@ -9,7 +9,7 @@ define(function (require) {
     var Animation = require('./Animation');
 
     var exports = {};
-    
+
     extend(exports, require('./transition'));
     extend(exports, require('./util'));
 

@@ -4,7 +4,7 @@
  */
 
 define(function () {
-    
+
     var exports = {};
 
     var rAF = window.requestAnimationFrame
@@ -17,10 +17,10 @@ define(function () {
         };
 
     var cRAF = window.cancelAnimationFrame
-        || window.webkitCancelAnimationFrame                    
-        || window.mozCancelAnimationFrame                    
-        || window.oCancelAnimationFrame                    
-        || window.msCancelAnimationFrame                    
+        || window.webkitCancelAnimationFrame
+        || window.mozCancelAnimationFrame
+        || window.oCancelAnimationFrame
+        || window.msCancelAnimationFrame
         || function (idenity) {
             clearTimeout(idenity);
         };
