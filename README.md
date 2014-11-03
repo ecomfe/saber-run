@@ -1,10 +1,19 @@
-# saber-run [![Build Status](https://travis-ci.org/ecomfe/saber-run.png?branch=master)](https://travis-ci.org/ecomfe/saber-run)
+saber-run [![Build Status](https://travis-ci.org/ecomfe/saber-run.png?branch=master)](https://travis-ci.org/ecomfe/saber-run)
+===
 
 移动端动画效果支持
 
+## Installation
+
+通过 [edp](https://github.com/ecomfe/edp) 引入模块：
+
+```sh
+edp import saber-run
+```
+
 ## Usage
 
-```javascript
+```js
 var runner = require('saber-run');
 var ele = document.getElmentById('saber');
 
@@ -30,19 +39,25 @@ animation
 
 ## API
 
-### .animation( ele, options )
+* [Methods](#methods)
+* [Classes](#classes)
 
-创建动画对象, 返回`Animation`实例
+### Methods
 
-* `ele` `{HTMLElement}` 需要进行动画的DOM元素
-* `options` `{Object=}` 默认动画配置参数
-* `options.duration` `{number=}` 默认动画时长
-* `options.delay` `{number=}` 默认动画延时
-* `options.ease` `{string=}` 默认缓动效果
+#### animation(ele[, options])
+
+创建动画对象, 返回[Animation](doc/animation.md)实例
+
+* **ele** `{HTMLElement}` 需要进行动画的DOM元素
+* **options** `{Object=}` 默认动画配置参数
+    * **duration** `{number=}` 默认动画时长
+    * **delay** `{number=}` 默认动画延时
+    * **ease** `{string=}` 默认缓动效果
+* _return_ `{Animation}` [Animation](doc/animation.md)动画对象
 
 缓动效果如下 参考[move.js](https://github.com/visionmedia/move.js)：
 
-```javascript
+```js
 {
     'default': 'ease',
     'in': 'ease-in',
@@ -77,175 +92,61 @@ animation
 }
 ```
 
-### Animation 实例
-
-支持链式调用
-
-#### .set( property, value )
-
-设置动画样式属性
-
-* `property` `{string}` 属性名称
-* `value` `{string}` 属性值
-
-```javascript
-var animation = require('saber-run').animation(ele);
-animation.set('width', '200px');
-```
-
-#### .duration( time )
-
-设置单次动画的时长，通过`.run()`执行动画后会重置为默认设置
-
-* `time` `{number}` 时间，单位`s`
-
-#### .delay( time )
-
-设置单次动画的延时，通过`.run()`执行动画后会重置为默认设置
-
-* `time` `{number}` 时间，单位`s`
-
-#### .ease( name )
-
-设置单次动画的缓动效果，通过`.run()`执行动画后会重置为默认设置
-
-* `name` `{string}` 缓动效果名称
-
-#### .run()
-
-执行动画
-
-#### .end()
-
-结束动画，所有属性立即变为最终值
-
-#### .finish( callback )
-
-注册动画执行完成后的回调函数，只针对单次动画有效
-
-* `callback` `{Function}` 回调函数
-
-#### .moveTo( x, y )
-
-移动到确定位置
-
-* `x` `{number=}` X轴坐标
-* `y` `{number=}` Y轴坐标
-
-#### .move( x, y )
-
-相对位移
-
-* `x` `{number=}` 横向距离
-* `y` `{number=}` 纵向距离
-
-```javascript
-// 元素原始位置为100, 100
-var ele = document.getElementById('target');
-var animation = require('saber-run').animation(ele);
-animation
-    .move(10, 10)
-    // 移动到110, 110
-    .run()
-    .move(10, 10)
-    // 最终元素位置为120, 120
-    .run();
-```
-
-#### .rotateTo( deg )
-
-旋转到固定角度
-
-* `deg` `{number}` 角度
-
-#### .rotate( deg )
-
-相对旋转
-
-* `deg` `{number=}` 角度
-
-#### .skewTo( deg )
-
-倾斜到固定角度
-
-* `deg` `{number}` 角度
-
-#### .skew( deg )
-
-相对倾斜
-
-* `deg` `{number=}` 角度
-
-#### .scaleTo( rate )
-
-放大缩小
-
-* `rate` `{number}` 比例
-
-#### .scale( rate )
-
-相对增加缩小
-
-* `rate` `{number=}` 比例
-
-### transition
-
-#### .transition( ele, properties, options )
+#### transition(ele, properties, options)
 
 设置元素transition效果
 
-* `ele` `{HTMLElement}` DOM元素
-* `properties` `{Object}` 变化的样式属性
-* `options` `{Object}` 配置参数
-* `options.duration` `{number=}` 时长
-* `options.delay` `{number=}` 延时
-* `options.ease` `{string=}` 缓动效果
+* **ele** `{HTMLElement}` DOM元素
+* **properties** `{Object}` 变化的样式属性
+* **options** `{Object=}` 配置参数
+    * **duration** `{number=}` 时长
+    * **delay** `{number=}` 延时
+    * **ease** `{string=}` 缓动效果
+* _return_ `{Promise}` 表示transition结果的[Promise](https://github.com/ecomfe/saber-promise)对象
 
-#### .stopTransition( ele )
+#### stopTransition(ele)
 
 停止元素的transition效果，所有属性立即变为最终值
 
-* `ele` `{HTMLElement}` DOM元素
+* **ele** `{HTMLElement}` DOM元素
 
-#### .onTransitionEnd( ele, callback, useCapture )
+#### onTransitionEnd(ele, callback[, useCapture])
 
 监听transitionend事件
 
-* `ele` `{HTMLElement}` DOM元素
-* `callback` `{Function}` 回调函数
+* **ele** `{HTMLElement}` DOM元素
+* **callback** `{Function}` 回调函数
+* **useCapture** `{boolean=}` 是否启用捕获，默认为`false`
 
-#### .unTransitionEnd( ele, callback, useCapture )
+#### unTransitionEnd(ele, callback[, useCapture])
 
 取消监听transitionend事件
 
-* `ele` `{HTMLElement}` DOM元素
-* `callback` `{Function}` 回调函数
+* **ele** `{HTMLElement}` DOM元素
+* **callback** `{Function}` 回调函数
+* **useCapture** `{boolean}` 是否启用捕获，默认为`false`
 
-#### .oneTransitionEnd( ele, callback, useCapture )
+#### oneTransitionEnd(ele, callback[, useCapture])
 
 只监听一次transitionend事件
 
-* `ele` `{HTMLElement}` DOM元素
-* `callback` `{Function}` 回调函数
+* **ele** `{HTMLElement}` DOM元素
+* **callback** `{Function}` 回调函数
+* **useCapture** `{boolean}` 是否启用捕获，默认为`false`
 
-### util
-
-#### .requestAnimationFrame( callback )
+#### requestAnimationFrame(callback)
 
 添加动画帧
 
-* `callback` `{Function}` 回调函数
+* **callback** `{Function}` 回调函数
+* _return_ `{number}` 动画帧标示
 
-#### .cancelAnimationFrame( idenity )
+#### cancelAnimationFrame(idenity)
 
 取消已添加的动画帧
 
-* `idenity` `{number}` 动画帧标示，由`.requestAnimationFrame()`返回
+* **idenity** `{number}` 动画帧标示，由[requestAnimationFrame()](#requestanimationframecallback)返回
 
-#### .now()
+### Classes
 
-获取当前的时间戳
-
-===
-
-[![Saber](https://f.cloud.github.com/assets/157338/1485433/aeb5c72a-4714-11e3-87ae-7ef8ae66e605.png)](http://ecomfe.github.io/saber/)
+* [Animation](doc/animation.md) 动画对象

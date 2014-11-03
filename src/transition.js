@@ -11,7 +11,7 @@ define(function (require) {
     var exports = {};
 
     var transitionEndEvents = [
-            'transitionend', 'webkitTransitionEnd', 
+            'transitionend', 'webkitTransitionEnd',
             'oTransitionEnd', 'MSTransitionEnd',
             'otransitionend' // Opera某些犯2的版本...
         ];
@@ -76,7 +76,7 @@ define(function (require) {
         index = parseInt(index, 10);
         var items = eventList[index] || [];
         items.some(function (item, index, items) {
-            return item == callback 
+            return item === callback
                     && items.splice(index, 1);
         });
     }
@@ -104,12 +104,12 @@ define(function (require) {
 
     /**
      * 将CSS属性驼峰化
-     * 
+     *
      * @param {string} target 目标字符串
      * @return {string}
      */
-    function camelize( target ) {
-        return target.replace(/-+(.)?/g, function( match, chr ) {
+    function camelize(target) {
+        return target.replace(/-+(.)?/g, function (match, chr) {
             return chr ? chr.toUpperCase() : '';
         });
     }
@@ -198,10 +198,10 @@ define(function (require) {
      * 设置transition
      *
      * @public
-     * @param {Object} options 参数
+     * @param {HTMLElement} ele DOM元素
      * @param {Object} properties 要改变的属性
      * @param {number=} options.duration 持续时间 单位秒
-     * @param {string=} options.ease 缓动效果 
+     * @param {string=} options.ease 缓动效果
      * @param {string=} options.timing 缓动效果(!已抛弃)
      * @param {number=} options.delay 延时 单位秒
      * @return {Promise}
@@ -209,7 +209,7 @@ define(function (require) {
     exports.transition = function (ele, properties, options) {
 
         if (!ele || !properties) {
-            return Resolver.resolved();
+            return Resolver.resolved(ele);
         }
 
         options = options || {};
@@ -227,7 +227,7 @@ define(function (require) {
         });
 
         Object.keys(properties).forEach(function (name) {
-            if (oldStyles[name] != properties[name]) {
+            if (oldStyles[name] !== properties[name]) {
                 propertyNames.push(name);
                 dom.setStyle(ele, name, properties[name]);
             }
@@ -240,7 +240,7 @@ define(function (require) {
             // 所以将最后一个transitionend作为整体的结束
             var res = true;
             if (e === true || propertyNames.length <= 1) {
-                resolver.fulfill();
+                resolver.fulfill(ele);
                 // 恢复默认设置
                 dom.setStyle(ele, 'transition', '');
             }
@@ -264,7 +264,7 @@ define(function (require) {
             dom.setStyle(ele, 'transition-delay', options.delay + 's');
         }
         else {
-            resolver.fulfill();
+            resolver.fulfill(ele);
         }
 
         return resolver.promise();

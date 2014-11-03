@@ -4,7 +4,7 @@
  */
 
 define(function () {
-    
+
     var exports = {};
 
     var rAF = window.requestAnimationFrame
@@ -12,14 +12,18 @@ define(function () {
         || window.mozRequestAnimationFrame
         || window.oRequestAnimationFrame
         || window.msRequestAnimationFrame
-        || function (callback) {return setTimeout(callback, 1000 / 60);};
+        || function (callback) {
+            return setTimeout(callback, 1000 / 60);
+        };
 
     var cRAF = window.cancelAnimationFrame
-        || window.webkitCancelAnimationFrame                    
-        || window.mozCancelAnimationFrame                    
-        || window.oCancelAnimationFrame                    
-        || window.msCancelAnimationFrame                    
-        || function (idenity) {clearTimeout(idenity);};
+        || window.webkitCancelAnimationFrame
+        || window.mozCancelAnimationFrame
+        || window.oCancelAnimationFrame
+        || window.msCancelAnimationFrame
+        || function (idenity) {
+            clearTimeout(idenity);
+        };
 
     /**
      * 添加动画帧
@@ -40,19 +44,6 @@ define(function () {
      */
     exports.cancelAnimationFrame = function (idenity) {
         cRAF.call(window, idenity);
-    };
-
-    /**
-     * 获取当前的时间戳
-     * 单位毫秒
-     *
-     * @public
-     * @return {number}
-     */
-    exports.now = function () {
-        return Date.now 
-                ? Date.now()
-                : new Date().getTime();
     };
 
     return exports;

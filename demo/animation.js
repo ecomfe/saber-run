@@ -87,6 +87,7 @@ define(function (require) {
             var items = view.panel.querySelectorAll('p.item-active');
 
             if (items.length <= 0) {
+                alert('Please select methods')
                 return;
             }
             

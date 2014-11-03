@@ -102,7 +102,7 @@ define(function (require) {
         var value;
         Object.keys(properties).forEach(function (property) {
             value = properties[property];
-            if (property == 'transform') {
+            if (property === 'transform') {
                 properties = parseTransform(action[property] || '');
                 value = parseTransform(value);
                 properties = extend(properties, value);
@@ -141,7 +141,7 @@ define(function (require) {
 
         this.reset();
 
-        this._promise = Resolver.resolved();
+        this._promise = Resolver.resolved(ele);
     }
 
     // 默认的动画时间间隔
@@ -277,7 +277,7 @@ define(function (require) {
                 item = action[key];
                 // 如果动作是一个function
                 // 则将其执行后的返回结果作为动作
-                if (typeof item == 'function') {
+                if (typeof item === 'function') {
                     item = item(ele) || {};
                     delete action[key];
                     setAction(item, action);
@@ -302,8 +302,17 @@ define(function (require) {
         return this;
     };
 
+    /**
+     * 销毁动画对象
+     *
+     * @public
+     */
+    Animation.prototype.dispose = function () {
+        this._main = null;
+    };
+
     Animation.addAction(
-        'moveTo', 
+        'moveTo',
         /**
          * 移动到某位置
          *
@@ -325,7 +334,7 @@ define(function (require) {
     );
 
     Animation.addAction(
-        'move', 
+        'move',
         /**
          * 在原有基础上移动
          *
@@ -436,7 +445,7 @@ define(function (require) {
          * 放大缩小
          *
          * @public
-         * @param {number} deg
+         * @param {number} rate
          * @return {Animation}
          */
         function (rate) {
@@ -452,7 +461,7 @@ define(function (require) {
          * 放大缩小
          *
          * @public
-         * @param {number} deg
+         * @param {number} rate
          * @return {Animation}
          */
         function (rate) {

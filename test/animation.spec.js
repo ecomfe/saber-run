@@ -100,6 +100,19 @@ define(function (require) {
                         done();
                     });
             });
+
+            it('should be called with argument', function (done) {
+                animation
+                    .set('top', '100px')
+                    .finish(function (ele) {
+                        expect(ele).toBe(element);
+                    })
+                    .run()
+                    .finish(function (ele) {
+                        expect(ele).toBe(element);
+                        done();
+                    });
+            });
         });
 
         it('.delay should set daly time', function (done) {
@@ -203,6 +216,14 @@ define(function (require) {
                     });
             });
 
+        });
+
+        describe('.dispose', function () {
+            it('should unlink element', function () {
+                expect(animation._main).toBe(element);
+                animation.dispose();
+                expect(animation._main).not.toBe(element);
+            });
         });
     });
 });
